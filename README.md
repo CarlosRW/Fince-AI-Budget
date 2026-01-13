@@ -6,7 +6,7 @@ Fince is a high-performance personal finance dashboard that leverages Artificial
 
 ---
 
-<img width="1876" height="1079" alt="image" src="https://github.com/user-attachments/assets/a9727bcf-bb4d-4900-9cb6-cfe165b85d9c" />
+https://github.com/user-attachments/assets/8365fec9-c06e-4e68-86ed-ae073ac20bee
 
 ---
 
