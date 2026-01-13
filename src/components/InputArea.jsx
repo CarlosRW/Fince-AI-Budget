@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Sparkles, Send } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { analyzeExpense } from '../lib/gemini';
 
-const InputArea = ({ onExpensesFound }) => {
+const InputArea = ({ onExpensesFound, accentColor }) => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -10,44 +10,43 @@ const InputArea = ({ onExpensesFound }) => {
     if (!text.trim()) return;
     setLoading(true);
     const results = await analyzeExpense(text);
-    
     if (results && results.length > 0) {
       onExpensesFound(results);
       setText("");
-    } else {
-      alert("La IA no detectó movimientos claros. Ej: 'Gané 500' o 'Gasté 20 en café'");
     }
     setLoading(false);
   };
 
   return (
-    <div className="space-y-4">
-      <div className="relative">
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Describe tus movimientos... (ej: Gasté 50 en gasolina y me pagaron 200)"
-          className="w-full p-5 rounded-[2rem] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 transition-all shadow-inner h-32 resize-none text-sm"
-        />
-        <div className="absolute bottom-4 right-4 flex gap-2">
-          <button
-            onClick={handleSubmit}
-            disabled={loading || !text.trim()}
-            className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm transition-all active:scale-95 ${
-              loading 
-                ? 'bg-slate-200 text-slate-400 cursor-not-allowed' 
-                : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30'
-            }`}
-          >
-            {loading ? "Procesando..." : (
-              <>
-                <Sparkles size={16} />
-                Analizar
-              </>
-            )}
-          </button>
-        </div>
-      </div>
+    <div className="relative flex flex-col gap-4">
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Ej: Cobré mi salario de 2000 y pagué 50 de internet..."
+        className={`w-full p-5 rounded-3xl border outline-none focus:ring-2 transition-all h-36 md:h-32 resize-none text-sm leading-relaxed ${
+          // Cambiamos bg-slate-50 por bg-white para que sea realmente blanco en modo claro
+          "bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white"
+        }`}
+        style={{ '--tw-ring-color': accentColor }}
+      />
+      <button
+        onClick={handleSubmit}
+        disabled={loading || !text.trim()}
+        style={{ 
+          backgroundColor: loading ? '#cbd5e1' : accentColor,
+          boxShadow: `0 10px 15px -3px ${accentColor}33` 
+        }}
+        className="w-full md:w-auto md:absolute md:bottom-4 md:right-4 flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl font-bold text-sm text-white transition-all active:scale-95 hover:brightness-110 disabled:cursor-not-allowed"
+      >
+        {loading ? (
+          <div className="animate-spin h-5 w-5 border-2 border-white/30 border-t-white rounded-full" />
+        ) : (
+          <>
+            <Sparkles size={18} />
+            <span>Analizar con IA</span>
+          </>
+        )}
+      </button>
     </div>
   );
 };

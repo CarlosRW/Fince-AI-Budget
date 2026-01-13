@@ -42,7 +42,7 @@ export const getFinancialAdvice = async (history, balance, topic) => {
                     HISTORIAL: ${JSON.stringify(history.slice(-10))}`
         }
       ],
-      model: "llama-3.3-70b-versatile",
+      model: "llama-3.1-8b-instant", 
     });
     return chatCompletion.choices[0].message.content;
   } catch (error) {
